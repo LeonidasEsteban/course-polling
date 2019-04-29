@@ -6,18 +6,20 @@ import Form from '../components/form'
 import Sidebar from '../components/sidebar'
 const Layout = styled.div`
   display: grid;
-  border: 1px solid red;
   grid-template-areas: 'header header'
   'map map';
   grid-template-columns: 200px 1fr;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: 50px 1fr;
   height: 100vh;
+  font-family: system-ui;
   .map-container {
     position: relative;
     grid-area: map;
   }
   .header-container {
     grid-area: header;
+    background: gray;
+    color: white;
   }
 `
 
