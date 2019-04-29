@@ -64,15 +64,15 @@ app.prepare().then(async () => {
 
     const course = new IssueModel({
       courseId: uuidv1(),
-      date: req.params.date,
-      title: req.params.title,
-      description: req.params.description,
-      sections: req.params.sections.map(e => ({title: e.title, description: e.description})),
+      date: req.body.date,
+      title: req.body.title,
+      description: req.body.description,
+      sections: req.body.sections.map(e => ({title: e.title, description: e.description})),
       comments: [],
       votes: [],
       author: {
-          name: req.params.userName,
-          uid: req.params.uid
+          name: req.body.userName,
+          uid: req.body.uid
       }
     });
 
@@ -102,12 +102,17 @@ app.prepare().then(async () => {
     })
   });
 
-  server.put('/courses/:curseId', (req, res) => {
+  server.put('/vote/:curseId', (req, res) => {
     const courseId = req.params.uid
     console.log(courseId);
-    IssueModel.findAndUpdate({ courseId: courseId }, (err, courses) => {
-      console.log(err, courses);
-      res.json(course);
+    console.log(req.body.vote);
+    IssueModel.findAndUpdate({ courseId: courseId }, {
+      $set: {
+        "votes.$.vote": req.body.vote
+      }
+    }, (err, courses) => {
+      if (err) return res.send(err)
+      res.send(result)
     })
   });
 
