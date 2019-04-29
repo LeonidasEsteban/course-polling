@@ -106,13 +106,30 @@ app.prepare().then(async () => {
     })
   });
 
-  server.put('/vote/:curseId', (req, res) => {
+  server.put('/courses/:curseId/vote', (req, res) => {
     const courseId = req.params.uid
     console.log(courseId);
     console.log(req.body.vote);
     CourseModel.findAndUpdate({ courseId: courseId }, {
       $set: {
         "votes.$.vote": req.body.vote
+      }
+    }, (err, courses) => {
+      if (err) return res.send(err)
+      res.send(result)
+    })
+  });
+
+  server.put('/courses/:curseId/comment', (req, res) => {
+    const courseId = req.params.uid
+    console.log(courseId);
+    console.log(req.body.vote);
+    CourseModel.findAndUpdate({ courseId: courseId }, {
+      $push: {
+        "comments": {
+          comment: req.body.comment,
+          votes: []
+        }
       }
     }, (err, courses) => {
       if (err) return res.send(err)
