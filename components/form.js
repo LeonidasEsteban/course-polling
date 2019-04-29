@@ -14,7 +14,7 @@ import Divider from '@material-ui/core/Divider';
 
 const styles = {
   card: {
-    maxWidth: 500,
+    // maxWidth: 500,
   }
 }
 
@@ -72,32 +72,32 @@ class Form extends Component {
         <Card className={this.props.classes.card}>
           <CardContent>
             <form onSubmit={this.handleSubmit} ref={this.form} method="POST">
-              <FormControl>
                 <CardHeader title={<h2>Course proposal</h2>} />
                 <TextField
                   name="title"
                   variant="outlined"
                   label="Title"
                   margin="normal"
+                  fullWidth
                 />
                 <TextField
                   name="description"
                   label="Description"
                   variant="outlined"
                   margin="normal"
+                  fullWidth
                 />
-                <Divider variant="middle" />
+                {/* <Divider variant="middle" /> */}
                 <div>
                   <h2>Syllabus</h2>
                 </div>
                 {
-                  this.state.sectionList.map(() => <Section/>)
+                  this.state.sectionList.map((x, index) => <Section key={index}/>)
                 }
                 <Button variant="contained" color="primary" onClick={this.onClickAdd}>Add section</Button>
                 <div>
                   <Button type="submit" variant="contained" color="primary">Send Course</Button>
                 </div>
-              </FormControl>
             </form>
           </CardContent>
         </Card>

@@ -1,14 +1,15 @@
 
 import { Component } from 'react'
 import styled from 'styled-components'
-
 import Form from '../components/form'
-import Sidebar from '../components/sidebar'
+import CourseList from '../components/courseList'
+import 'isomorphic-fetch'
+
 const Layout = styled.div`
   display: grid;
   grid-template-areas: 'header header'
-  'map map';
-  grid-template-columns: 200px 1fr;
+  'form courses';
+  grid-template-columns: 500px 1fr;
   grid-template-rows: 50px 1fr;
   height: 100vh;
   font-family: system-ui;
@@ -24,19 +25,25 @@ const Layout = styled.div`
 `
 
 class Home extends Component {
-  // static getInitialProps({ req }) {
-  //   return {
-  //     apiKey: req.api_key
-  //   }
-  // }
+  static async getInitialProps() {
+    const response = await fetch('http://localhost:3000/courses')
+    const data = await response.json()
+    console.log(data)
+    return {
+      courses: data
+    }
+  }
   render() {
     return (
       <Layout>
         <header className="header-container">
           Create a Course Syllabus
         </header>
-        <div className="map-container">
+        <div className="form-container">
           <Form />
+        </div>
+        <div className="courseList-container">
+          <CourseList list={this.props.courses} />
         </div>
       </Layout>
     )

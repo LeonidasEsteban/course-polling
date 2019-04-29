@@ -92,8 +92,8 @@ app.prepare().then(async () => {
     const courseId = req.params.uid
     console.log(courseId);
     CourseModel.find({ courseId: courseId }, (err, courses) => {
-      console.log(err, courses);
-      res.json(course);
+      // console.log(err, courses);
+      res.json(courses);
     })
   });
 
