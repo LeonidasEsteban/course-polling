@@ -9,7 +9,7 @@ const dotenv = require('dotenv')
 
 
 dotenv.config()
-mongoose.connect('mongodb://admin:349603@ds211440.mlab.com:11440/ombudsbot');
+mongoose.connect('mongodb+srv://alminiltladol:NV7Z8ii273jNP3P@cluster0-kcdnj.azure.mongodb.net/test?retryWrites=true');
 
 const CourseModel = mongoose.model('CourseModel', {
   courseId: String,
