@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { Component, createRef } from 'react'
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Input from '@material-ui/core/Input';
@@ -9,7 +9,7 @@ function Section() {
   return (
     <>
       <FormGroup>
-        <Input name="section-title" placeholder="Título" />
+        <Input name="section-title" placeholder="Title" />
         <Input name="section-description" placeholder="Description" />
       </FormGroup>
     </>
@@ -27,11 +27,31 @@ class Form extends Component {
       sectionList: list
     })
   }
+  handleSubmit = async (event) => {
+    event.preventDefault()
+    const form = new FormData(this.form.current)
+    const sections = []
+    form.getAll('section-title').forEach((title, i)=> sections[i] = {title})
+    form.getAll('section-description').forEach((description, i)=> sections[i] = {...sections[i], description})
+
+    const response = await fetch('/courses', {
+      method: 'POST',
+      body: {
+        title: form.get('title'),
+        description: form.get('description'),
+        sections
+      }
+    })
+    const data = await response.json()
+    console.log(data)
+  }
+  form = createRef()
   render() {
     return (
-      <div>
+      <form onSubmit={this.handleSubmit} ref={this.form}>
         <FormControl>
-          <Input name="title" placeholder="Título" />
+          <h1>Course proposal</h1>
+          <Input name="title" placeholder="Title" />
           <div>
             <h2>Syllabus</h2>
           </div>
@@ -39,8 +59,9 @@ class Form extends Component {
             this.state.sectionList.map(() => <Section/>)
           }
           <Button onClick={this.onClickAdd}>Agregar Sección</Button>
+          <Input type="submit" value="Send Course"/>
         </FormControl>
-      </div>
+      </form>
     )
   }
 }
