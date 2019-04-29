@@ -62,7 +62,7 @@ app.prepare().then(async () => {
   server.post('/courses', upload.array(), (req, res) => {
     console.log(req.body);
 
-    const course = new IssueModel({
+    const course = new CourseModel({
       courseId: uuidv1(),
       date: req.body.date,
       title: req.body.title,
@@ -87,7 +87,7 @@ app.prepare().then(async () => {
   server.get('/courses', (req, res) => {
     const courseId = req.params.uid
     console.log(courseId);
-    IssueModel.find({ courseId: courseId }, (err, courses) => {
+    CourseModel.find({ courseId: courseId }, (err, courses) => {
       console.log(err, courses);
       res.json(course);
     })
@@ -96,7 +96,7 @@ app.prepare().then(async () => {
   server.get('/courses/:curseId', (req, res) => {
     const courseId = req.params.uid
     console.log(courseId);
-    IssueModel.findOne({ courseId: courseId }, (err, courses) => {
+    CourseModel.findOne({ courseId: courseId }, (err, courses) => {
       console.log(err, courses);
       res.json(course);
     })
@@ -106,7 +106,7 @@ app.prepare().then(async () => {
     const courseId = req.params.uid
     console.log(courseId);
     console.log(req.body.vote);
-    IssueModel.findAndUpdate({ courseId: courseId }, {
+    CourseModel.findAndUpdate({ courseId: courseId }, {
       $set: {
         "votes.$.vote": req.body.vote
       }
