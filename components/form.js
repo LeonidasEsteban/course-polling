@@ -3,14 +3,27 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
 
+const styles = {
+  card: {
+    maxWidth: 500,
+  }
+}
 
 function Section() {
   return (
     <>
       <FormGroup>
-        <Input name="section-title" placeholder="Title" />
-        <Input name="section-description" placeholder="Description" />
+        <TextField variant="outlined" name="section-title" margin="normal" label="Title" />
+        <TextField variant="outlined" name="section-description" margin="normal" label="Description" />
       </FormGroup>
     </>
   )
@@ -48,31 +61,50 @@ class Form extends Component {
       }
     })
     if(response.status === 200) {
-      const data = await response.json()
-      console.log(data)
+      // const data = await response.json()
+      console.log(await response.text())
     }
   }
   form = createRef()
   render() {
     return (
-      <form onSubmit={this.handleSubmit} ref={this.form} method="POST">
-        <FormControl>
-          <h1>Course proposal</h1>
-          <Input name="title" placeholder="Title" />
-          <Input name="description" placeholder="Description" />
-          <div>
-            <h2>Syllabus</h2>
-          </div>
-          {
-            this.state.sectionList.map(() => <Section/>)
-          }
-          <Button onClick={this.onClickAdd}>Agregar Sección</Button>
-          <Input type="submit" value="Send Course"/>
-        </FormControl>
-      </form>
+      <Paper>
+        <Card className={this.props.classes.card}>
+          <CardContent>
+            <form onSubmit={this.handleSubmit} ref={this.form} method="POST">
+              <FormControl>
+                <CardHeader title={<h2>Course proposal</h2>} />
+                <TextField
+                  name="title"
+                  variant="outlined"
+                  label="Title"
+                  margin="normal"
+                />
+                <TextField
+                  name="description"
+                  label="Description"
+                  variant="outlined"
+                  margin="normal"
+                />
+                <Divider variant="middle" />
+                <div>
+                  <h2>Syllabus</h2>
+                </div>
+                {
+                  this.state.sectionList.map(() => <Section/>)
+                }
+                <Button variant="contained" color="primary" onClick={this.onClickAdd}>Add section</Button>
+                <div>
+                  <Button type="submit" variant="contained" color="primary">Send Course</Button>
+                </div>
+              </FormControl>
+            </form>
+          </CardContent>
+        </Card>
+      </Paper>
     )
   }
 }
 
 
-export default Form
+export default withStyles(styles)(Form)
