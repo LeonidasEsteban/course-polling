@@ -42,13 +42,15 @@ class Form extends Component {
         sections
       }
     })
-    const data = await response.json()
-    console.log(data)
+    if(response.status === 200) {
+      const data = await response.json()
+      console.log(data)
+    }
   }
   form = createRef()
   render() {
     return (
-      <form onSubmit={this.handleSubmit} ref={this.form}>
+      <form onSubmit={this.handleSubmit} ref={this.form} method="POST">
         <FormControl>
           <h1>Course proposal</h1>
           <Input name="title" placeholder="Title" />
