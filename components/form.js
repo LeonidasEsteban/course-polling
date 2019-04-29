@@ -36,14 +36,13 @@ class Form extends Component {
     const body = {
       title: form.get('title'),
       description: form.get('description'),
+      sections,
       userName: 'userTest',
-      uid: '123',
-      sections
     }
     console.log(body)
     const response = await fetch('/courses', {
       method: 'POST',
-      body,
+      body: JSON.stringify(body),
       headers:{
         'Content-Type': 'application/json'
       }

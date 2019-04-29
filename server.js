@@ -61,26 +61,30 @@ app.prepare().then(async () => {
 
   server.post('/courses', upload.array(), (req, res) => {
     console.log(req.body);
-
-    const course = new CourseModel({
+    const model = {
       courseId: uuidv1(),
-      date: req.body.date,
+      date: new Date(),
       title: req.body.title,
       description: req.body.description,
-      sections: req.body.sections.map(e => ({title: e.title, description: e.description})),
+      sections: req.body.sections,
       comments: [],
       votes: [],
       author: {
           name: req.body.userName,
-          uid: req.body.uid
       }
-    });
+    }
+    console.log(model)
+    const course = new CourseModel(model);
+    console.log(course)
 
     course
       .save()
       .then(c => {
         console.log(c);
         res.end('course created')
+      })
+      .catch((err) => {
+        console.log(err)
       });
   });
 
