@@ -24,6 +24,6 @@
     "react-dom": "16.8.6",
     "react-markdown": "^4.0.8",
     "styled-components": "4.2.0",
-    "uuid": "3.2.1"
+    "uuid": "^3.2.1"
   }
 }

@@ -6,7 +6,7 @@ const upload = multer();
 const mongoose = require('mongoose');
 const axios = require('axios');
 const dotenv = require('dotenv')
-
+const uuidv1 = require('uuid/v1');
 
 dotenv.config()
 mongoose.connect('mongodb+srv://alminiltladol:NV7Z8ii273jNP3P@cluster0-kcdnj.azure.mongodb.net/test?retryWrites=true');
@@ -63,14 +63,11 @@ app.prepare().then(async () => {
     console.log(req.body);
 
     const course = new IssueModel({
-      courseId: req.params.courseId,
+      courseId: uuidv1(),
       date: req.params.date,
       title: req.params.title,
       description: req.params.description,
-      sections: [{
-          title: req.params.title,
-          description: req.params.description
-      }],
+      sections: req.params.sections.map(e => ({title: e.title, description: e.description})),
       comments: [],
       votes: [],
       author: {
@@ -87,10 +84,10 @@ app.prepare().then(async () => {
       });
   });
 
-  server.get('/courses/', (req, res) => {
+  server.get('/courses', (req, res) => {
     const courseId = req.params.uid
     console.log(courseId);
-    IssueModel.find({ messengerUserId: req.params.uid }, (err, courses) => {
+    IssueModel.find({ courseId: courseId }, (err, courses) => {
       console.log(err, courses);
       res.json(course);
     })
@@ -99,7 +96,16 @@ app.prepare().then(async () => {
   server.get('/courses/:curseId', (req, res) => {
     const courseId = req.params.uid
     console.log(courseId);
-    IssueModel.findOne({ messengerUserId: req.params.uid }, (err, courses) => {
+    IssueModel.findOne({ courseId: courseId }, (err, courses) => {
+      console.log(err, courses);
+      res.json(course);
+    })
+  });
+
+  server.put('/courses/:curseId', (req, res) => {
+    const courseId = req.params.uid
+    console.log(courseId);
+    IssueModel.findAndUpdate({ courseId: courseId }, (err, courses) => {
       console.log(err, courses);
       res.json(course);
     })
