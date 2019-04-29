@@ -54,6 +54,7 @@ class Form extends Component {
         <FormControl>
           <h1>Course proposal</h1>
           <Input name="title" placeholder="Title" />
+          <Input name="description" placeholder="Description" />
           <div>
             <h2>Syllabus</h2>
           </div>
