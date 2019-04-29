@@ -33,13 +33,19 @@ class Form extends Component {
     const sections = []
     form.getAll('section-title').forEach((title, i)=> sections[i] = {title})
     form.getAll('section-description').forEach((description, i)=> sections[i] = {...sections[i], description})
-
+    const body = {
+      title: form.get('title'),
+      description: form.get('description'),
+      userName: 'userTest',
+      uid: '123',
+      sections
+    }
+    console.log(body)
     const response = await fetch('/courses', {
       method: 'POST',
-      body: {
-        title: form.get('title'),
-        description: form.get('description'),
-        sections
+      body,
+      headers:{
+        'Content-Type': 'application/json'
       }
     })
     if(response.status === 200) {
