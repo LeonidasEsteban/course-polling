@@ -22,6 +22,13 @@ const Layout = styled.div`
     background: gray;
     color: white;
   }
+  .courseList-container {
+    grid-area: courses;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    grid-gap: 10px;
+  }
 `
 
 class Home extends Component {
