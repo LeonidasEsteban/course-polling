@@ -95,8 +95,8 @@ app.prepare().then(async () => {
     })
   });
 
-  server.get('/courses/:curseId', (req, res) => {
-    const courseId = req.params.uid
+  server.get('/courses/:courseId', (req, res) => {
+    const courseId = req.params.courseId;
     console.log(courseId);
     CourseModel.findOne({ courseId: courseId }, (err, courses) => {
       console.log(err, courses);
@@ -104,11 +104,34 @@ app.prepare().then(async () => {
     })
   });
 
-  server.put('/courses/:curseId/vote', (req, res) => {
-    const courseId = req.params.uid
+  server.put('/courses/:courseId', (req, res) => {
+    const courseId = req.params.courseId;
+    const updateObj = {};
+    if(req.body.title) {
+      updateObj.title = req.body.title;
+    }
+    if(req.body.description) {
+      updateObj.description = req.body.description;
+    }
+    if(req.body.sections) {
+      updateObj.sections = req.body.sections;
+    }
+    console.log(courseId);
+    CourseModel.findOneAndUpdate({ courseId: courseId }, {
+      $set: {
+        ...{updateObj}
+      }
+    }, (err, courses) => {
+      console.log(err, courses);
+      res.json(course);
+    })
+  });
+
+  server.put('/courses/:courseId/vote', (req, res) => {
+    const courseId = req.params.courseId;
     console.log(courseId);
     console.log(req.body.vote);
-    CourseModel.findAndUpdate({ courseId: courseId }, {
+    CourseModel.findOneAndUpdate({ courseId: courseId }, {
       $set: {
         "votes.$.vote": req.body.vote
       }
@@ -118,11 +141,11 @@ app.prepare().then(async () => {
     })
   });
 
-  server.put('/courses/:curseId/comment', (req, res) => {
-    const courseId = req.params.uid
+  server.put('/courses/:courseId/comment', (req, res) => {
+    const courseId = req.params.courseId;
     console.log(courseId);
     console.log(req.body.vote);
-    CourseModel.findAndUpdate({ courseId: courseId }, {
+    CourseModel.findOneAndUpdate({ courseId: courseId }, {
       $push: {
         "comments": {
           comment: req.body.comment,
@@ -134,6 +157,25 @@ app.prepare().then(async () => {
       res.send(result)
     })
   });
+
+  // server.put('/courses/:courseId/comment/:commentId', (req, res) => {
+  //   const courseId = req.params.courseId;
+  //   const commentId = req.params.commentId;
+  //   console.log(courseId);
+  //   console.log(req.body.vote);
+  //   CourseModel.findOne({courseId: courseId})
+  //   .findOneAndUpdate({ courseId: courseId }, {
+  //     $push: {
+  //       "comments.$.id": {
+  //         comment: req.body.comment,
+  //         votes: []
+  //       }
+  //     }
+  //   }, (err, courses) => {
+  //     if (err) return res.send(err)
+  //     res.send(result)
+  //   })
+  // });
 
   server.get('*', (req, res) => {
     handle(req, res)
