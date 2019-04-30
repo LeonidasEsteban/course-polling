@@ -89,9 +89,7 @@ app.prepare().then(async () => {
   });
 
   server.get('/courses', (req, res) => {
-    const courseId = req.params.uid
-    console.log(courseId);
-    CourseModel.find({ courseId: courseId }, (err, courses) => {
+    CourseModel.find({}, (err, courses) => {
       // console.log(err, courses);
       res.json(courses);
     })
