@@ -1,6 +1,10 @@
 import { Component } from 'react'
 import Card from '@material-ui/core/Card';
 import styled from 'styled-components'
+import CardActions from '@material-ui/core/CardActions';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
+import { loadCSS } from 'fg-loadcss/src/loadCSS';
 
 const Course = styled.div`
   /* margin: 10px; */
@@ -11,6 +15,12 @@ const Course = styled.div`
 `
 
 class CourseList extends Component {
+  componentDidMount() {
+    loadCSS(
+      'https://use.fontawesome.com/releases/v5.1.0/css/all.css',
+      document.querySelector('#insertion-point-jss'),
+    );
+  }
   render() {
     console.log(this.props.list)
     return (
@@ -37,6 +47,11 @@ class CourseList extends Component {
                     }
                   </li>
                 </ul>
+                <CardActions>
+                  <IconButton color="primary">
+                    <Icon className="fa fa-star" fontSize="large"/>
+                  </IconButton>
+                </CardActions>
               </Course>
             </Card>
           ))
